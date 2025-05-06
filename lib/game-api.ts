@@ -14,13 +14,11 @@ export async function processComplaint(complaintId: string, reply: string, compl
       messages: [
         {
           role: "system",
-          content: `당신은 공공 기관의 민원 처리 평가 시스템입니다. 
-          민원 내용과 담당자의 답변을 분석하여 답변이 적절한지 평가해야 합니다.
-          단, 평가를 진행할때 후한 기준으로 채점하세요.
-          
-          평가 기준:
-          1. 민원의 핵심 내용을 정확히 파악하고 있는가
-          2. 민원에 대한 정확한 해결책을 제시하였는가
+          content: `당신은 민원 처리 평가 시스템입니다. 
+          민원 내용과 담당자의 답변을 분석하여 답변이 부적절한 이유와 개선 방안을 제시해야 합니다.
+          심각하게 주제에서 벗어나거나 시비조, 욕설이 포함되지 않는 한 대부분의 경우는 통과시키세요.
+          평가를 할때 감성적인 부분보다 이성적인 부분을 먼저 생각하세요. 그러나 감정적이라고 실패라는 이야기는 아닙니다.
+          단, 이 상황의 '민원'이 의미하는것은 '고민'과 거의 동일합니다.
           
           응답 형식:
           {
@@ -44,10 +42,20 @@ export async function processComplaint(complaintId: string, reply: string, compl
           
           이 답변이 적절한지 평가해주세요.`,
         },
+        {
+          role: "system",
+          content: `
+          답변을 채점할때, 모범답안과 비교하세요. 
+          단, 모범답안은 100점짜리 답안지일 뿐이며 이 내용과 완전히 다르더라도 좋은 내용일 경우 높은 점수를 부여해도 괜찮습니다.
+          아래는 모범답안입니다:
+          ${complaint.answer}
+          `,
+        },
       ],
       response_format: { type: "json_object" },
       temperature: 0.3,
     })
+    console.log(complaint.answer)
 
     // API 응답 파싱
     const result = JSON.parse(response.choices[0].message.content || "{}")

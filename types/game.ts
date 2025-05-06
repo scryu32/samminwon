@@ -5,6 +5,7 @@ export interface Complaint {
   subject: string
   content: string
   preview: string
+  answer: string
   senderId: string // 발신자 고유 ID
   originalId?: string // 실패 메일인 경우 원본 민원 ID
   isFailureNotice?: boolean // 실패 알림 메일인지 여부
@@ -20,7 +21,10 @@ export interface ComplaintInteraction {
 }
 
 export interface GameResult {
-  playerName: string
+  playerInfo: {
+    studentId: string
+    name: string
+  }
   completedAt: Date
   totalTime: number // 밀리초 단위
   interactions: ComplaintInteraction[]

@@ -9,7 +9,7 @@ import { saveGameResult } from "@/app/actions/save-game-result"
 import { Loader2 } from "lucide-react"
 
 export default function GameComplete() {
-  const { playerName, resetGame, getGameResult } = useGameContext()
+  const { resetGame, getGameResult, playerInfo } = useGameContext()
   const [isSaving, setIsSaving] = useState(false)
   const [saveStatus, setSaveStatus] = useState<{
     attempted: boolean
@@ -80,7 +80,9 @@ export default function GameComplete() {
           <CardTitle className="text-xl sm:text-2xl font-bold">축하합니다!</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 text-center px-4 sm:px-6">
-          <div className="text-base sm:text-lg font-medium">{playerName}님이 모든 민원을 성공적으로 처리했습니다!</div>
+          <div className="text-base sm:text-lg font-medium">
+            {playerInfo.studentId} {playerInfo.name}님이 모든 민원을 성공적으로 처리했습니다!
+          </div>
           <div className="p-3 sm:p-4 bg-green-50 rounded-md border border-green-200">
             <p className="text-green-800">3개의 민원을 모두 처리하여 게임에서 승리했습니다.</p>
             <p className="text-green-800 mt-2">총 소요 시간: {totalTime}</p>

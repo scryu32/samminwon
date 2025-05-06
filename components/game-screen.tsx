@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 
 export default function GameScreen() {
-  const { gameStarted, playerName, complaints, completedSenders } = useGameContext()
+  const { gameStarted, complaints, completedSenders, playerInfo } = useGameContext()
   const [selectedEmail, setSelectedEmail] = useState<string | null>(null)
   const [showEmailList, setShowEmailList] = useState(true)
   const isMobile = useMobile()
@@ -77,7 +77,9 @@ export default function GameScreen() {
     <Card className="w-full shadow-lg">
       <CardHeader className="border-b p-3 sm:p-4">
         <div className="flex justify-between items-center">
-          <CardTitle className="text-lg sm:text-xl font-bold truncate">{playerName}님의 민원 처리함</CardTitle>
+          <CardTitle className="text-lg sm:text-xl font-bold truncate">
+            {playerInfo.studentId} {playerInfo.name}님의 민원 처리함
+          </CardTitle>
           <GameStats />
         </div>
       </CardHeader>

@@ -4,15 +4,20 @@ import { createContext, useContext, useState, type ReactNode } from "react"
 import type { Complaint, ComplaintInteraction, GameResult } from "@/types/game"
 import { generateComplaints } from "@/lib/complaints"
 
+interface PlayerInfo {
+  studentId: string
+  name: string
+}
+
 interface GameContextType {
   gameStarted: boolean
-  playerName: string
+  playerInfo: PlayerInfo
   complaints: Complaint[]
   completedComplaints: string[]
   completedSenders: string[]
   interactions: ComplaintInteraction[]
   gameStartTime: number | null
-  startGame: (name: string) => void
+  startGame: (studentId: string, name: string) => void
   completeComplaint: (id: string, reply: string) => void
   resetGame: () => void
   addFailureEmail: (originalId: string, reason: string) => void
@@ -26,7 +31,7 @@ const GameContext = createContext<GameContextType | undefined>(undefined)
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const [gameStarted, setGameStarted] = useState(false)
-  const [playerName, setPlayerName] = useState("")
+  const [playerInfo, setPlayerInfo] = useState<PlayerInfo>({ studentId: "", name: "" })
   const [complaints, setComplaints] = useState<Complaint[]>([])
   const [completedComplaints, setCompletedComplaints] = useState<string[]>([])
   const [completedSenders, setCompletedSenders] = useState<string[]>([])
@@ -34,8 +39,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [gameStartTime, setGameStartTime] = useState<number | null>(null)
   const [totalAttempts, setTotalAttempts] = useState(0)
 
-  const startGame = (name: string) => {
-    setPlayerName(name)
+  const startGame = (studentId: string, name: string) => {
+    setPlayerInfo({ studentId, name })
     setComplaints(generateComplaints(3))
     setCompletedComplaints([])
     setCompletedSenders([])
@@ -109,7 +114,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const resetGame = () => {
     setGameStarted(false)
-    setPlayerName("")
+    setPlayerInfo({ studentId: "", name: "" })
     setComplaints([])
     setCompletedComplaints([])
     setCompletedSenders([])
@@ -196,7 +201,7 @@ ${formattedReason}
   // 게임 결과 데이터 생성
   const getGameResult = (): GameResult => {
     return {
-      playerName,
+      playerInfo,
       completedAt: new Date(),
       totalTime: gameStartTime ? Date.now() - gameStartTime : 0,
       interactions,
@@ -208,7 +213,7 @@ ${formattedReason}
     <GameContext.Provider
       value={{
         gameStarted,
-        playerName,
+        playerInfo,
         complaints,
         completedComplaints,
         completedSenders,
