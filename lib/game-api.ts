@@ -15,7 +15,7 @@ export async function processComplaint(complaintId: string, reply: string, compl
         {
           role: "system",
           content: `당신은 민원 처리 평가 시스템입니다. 
-          민원 내용과 담당자의 답변을 분석하여 답변이 부적절한 이유와 개선 방안을 제시해야 합니다.
+          민원 내용과 담당자의 답변을 분석하여 답변이 적절한지 부적절한지 판단해야합니다.
           심각하게 주제에서 벗어나거나 시비조, 욕설이 포함되지 않는 한 대부분의 경우는 통과시키세요.
           평가를 할때 감성적인 부분보다 이성적인 부분을 먼저 생각하세요. 그러나 감정적이라고 실패라는 이야기는 아닙니다.
           단, 이 상황의 '민원'이 의미하는것은 '고민'과 거의 동일합니다.
@@ -45,9 +45,6 @@ export async function processComplaint(complaintId: string, reply: string, compl
         {
           role: "system",
           content: `
-          답변을 채점할때, 모범답안과 비교하세요. 
-          단, 모범답안은 100점짜리 답안지일 뿐이며 이 내용과 완전히 다르더라도 좋은 내용일 경우 높은 점수를 부여해도 괜찮습니다.
-          아래는 모범답안입니다:
           ${complaint.answer}
           `,
         },

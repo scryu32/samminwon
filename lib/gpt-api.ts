@@ -45,7 +45,6 @@ export async function generateFailureReason(complaintId: string, reply: string, 
         {
           role: "system",
           content: `
-          아래는 모범답안입니다:
           ${complaint.answer}
           `,
         },
